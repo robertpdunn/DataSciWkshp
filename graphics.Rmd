@@ -8,11 +8,17 @@ output: html_document
 
 Data visualization with ggplot2. Also practicing open science principles using github
 
-```{r}
-
+```{r setup, include=FALSE, echo=FALSE}
+knitr::opts_chunk$set(echo=T)
+library(tidyverse)
 ```
 
 ```{r}
+myplot <- ggplot(data=mpg, aes(x= displ, y= hwy))
+
+myplot + geom_point()
+
+
 ```
 
 
