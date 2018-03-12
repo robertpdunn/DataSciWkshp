@@ -10,6 +10,7 @@ Data visualization with ggplot2. Also practicing open science principles using g
 ```{r setup, include=FALSE, echo=FALSE}
 knitr::opts_chunk$set(echo=T)
 library(tidyverse)
+library(ggthemes)
 ```
 
 ```{r}
@@ -39,5 +40,50 @@ myplot2
 myplot3<-ggplot(data=mpg, aes(x=displ, y=hwy)) +
   geom_point(alpha=0.4, color='indianred2')
 myplot3
+```
+
+```{r}
+myplot4<-ggplot(mpg, aes(x=displ, y= hwy, color=class)) + 
+  geom_point() +
+  facet_wrap(~ manufacturer)
+myplot4 +theme_hc()
+```
+
+```{r}
+myplot5<-ggplot(mpg,aes(x=displ, y=hwy, color=manufacturer)) +
+  geom_point() +
+  facet_wrap( ~ year) +geom_smooth()
+myplot5 + theme_bw()
+```
+
+```{r}
+myplot6<-ggplot(mpg, aes(x=drv, y=hwy))+
+  geom_violin()
+myplot6
+```
+
+```{r}
+myplot7<-ggplot(mpg,aes(x=displ,y=hwy))+
+  geom_smooth(method="gam") + geom_point() +
+  labs(x="Displacement", y="Highway miles per gallon")
+  
+t<-theme_minimal()
+myplot7 +t+theme(text=element_text(size=16))
+```
+
+Now let's make a bar chart
+```{r}
+myplot8<-ggplot(mpg,aes(x=fl, fill=manufacturer)) + 
+  geom_bar()
+myplot8
+```
+
+
+Now let's export a plot...
+```{r}
+myplot9<-ggplot(mpg,aes(x=fl,fill=class)) +
+geom_bar(position="dodge")
+
+ggsave("exampleplot.png", plot=myplot9, height= 30, width=15, units="cm")
 ```
 
