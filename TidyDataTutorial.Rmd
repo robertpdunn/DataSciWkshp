@@ -76,3 +76,70 @@ data %>% mutate(gdp = gdpPercap * pop)
 SA_weath<- filter(data, continent == "Americas") %>% mutate(lifetime_wealth = lifeExp*gdpPercap)
 ```
 
+group_by()
+Allows you to subset your dataframe using one of the columns. For instance, calculate average gdp across all 5 continents
+
+#find max gdp for each country in the dataset
+```{r}
+data %>% group_by(country) %>% mutate(gdp = pop* gdpPercap, maxgdp = max(gdp)) %>%
+  ungroup()
+```
+
+Summarize
+```{r}
+data %>% 
+  group_by(country) %>%
+  mutate(gdp = pop * gdpPercap) %>%
+  summarise(max_gdp = mean(gdp)) %>%
+  arrange(desc(max_gdp)) %>%
+  ungroup()
+```
+
+##joining 
+Let's combine two data sets. In this case, adding CO2 emissions data by country for 2007.
+
+```{r}
+co2<- read_csv("https://raw.githubusercontent.com/OHI-Science/data-science-training/master/data/co2.csv") #input co2 data
+str(co2)
+head(co2)
+summary(co2)
+```
+
+```{r}
+gap2007<- data %>% 
+  filter(year == 2007) %>%    #choose only data from 2007
+  full_join(co2,by="country")   #full join maintains all rows and columns, adds ots of NAs
+
+d2007<- data %>%
+  filter(year==2007)
+left_join(d2007,co2,by="country")   #left join uses the gapminder 2007 data set as the "main" dataset, adds co2 data where possible
+```
+
+#tidyr
+Create tidy data (long form) from non-tidy data
+
+```{r}
+ #example: the AirPassengers dataset, which is included in base R
+airp<-AirPassengers
+airp  #this is not in long form (tidy)
+```
+
+
+Use gather() to make non-tidy data into longform
+```{r}
+widegap<-read_csv("https://raw.githubusercontent.com/OHI-Science/data-science-training/master/data/gapminder_wide.csv")
+```
+
+```{r}
+bettergap<- widegap %>%
+  gather(observation, observ_value, -continent, -country) %>%
+  separate(observation, c("Variable", "Year"), sep="_", convert=T) 
+#but still not there, we have multiple variable types for each year for each country. Need to make new columns for each variable type  #use spread() 
+bettergap %>% 
+  spread(key=Variable, value=observ_value)
+```
+
+
+
+
+
