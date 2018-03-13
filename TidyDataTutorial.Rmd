@@ -40,9 +40,39 @@ unique(data[,"continent"])
 
 
 ```{r}
+summary(data)
+data2<- subset(data, year == 2007)
+summary(data2$gdpPercap)
+#install.packages("skimr")    #only need to run this line if you haven't already installed this package
+library(skimr)
+skim(data)
 
 ```
 
+##DPLYR
+The tidy data philosophy:
+Select ---> Apply ---> Combine
 
 
+```{r}
+filter(data,continent == "Asia")
+filter(data, lifeExp >= mean(lifeExp, data=data))
+data2<-select(data, -country,-pop)
+filter(data2, year == 2007)
+```
+
+###the PIPE
+%>%
+This lets you string together multiple data manipulation functions without storing intermediate objects 
+```{r}
+select(data, -continent) %>% 
+  filter(year == 2007)  ##when you pipe, the second function doesn't need a specific data frame to work on
+```
+
+Mutate: a way to do an operation on an entire column and then add a new column with the resulting values.
+#^How is this different from vectorizing?
+```{r}
+data %>% mutate(gdp = gdpPercap * pop)
+SA_weath<- filter(data, continent == "Americas") %>% mutate(lifetime_wealth = lifeExp*gdpPercap)
+```
 
