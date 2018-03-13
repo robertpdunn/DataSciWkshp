@@ -1,0 +1,48 @@
+---
+title: "Tidy Data Tutorial"
+author: "rpdunn"
+date: "March 13, 2018"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+```
+
+##Tidy data
+Long-form data where variable names are at the top of columns and rows represent individual observations.
+Import the Gapminder dataset and check out what the data looks like using a few different functions.
+
+```{r echo=FALSE}
+data<-read_csv("https://raw.githubusercontent.com/jules32/2017-11-30-MBARI/gh-pages/data/gapminder.csv")
+  #read_csv is a tidyverse function that requires fewer arguments that read.csv (base function)
+str(data)
+head(data, 10)
+tail(data, 5)
+dim(data)
+ncol(data)
+nrow(data)
+
+```
+
+What are the values in a particular column? Use the unique() function
+can select which column to look at using either $ or []
+
+```{r , echo=FALSE}
+unique(data$country)
+unique(data$continent)
+
+unique(data[,4]) #or
+unique(data[,"continent"])
+```
+
+
+
+```{r}
+
+```
+
+
+
+
